@@ -17,7 +17,7 @@ ELSE 'No'
 END AS triangle
 FROM Triangle
 
---baitap3
+--baitap3 (lỗi input)
 SELECT
 ROUND(SUM(CASE
 WHEN call_category IS NULL OR call_category = 'n/a' THEN 1
