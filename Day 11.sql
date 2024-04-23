@@ -58,3 +58,95 @@ LEFT JOIN page_likes
 ON pages.page_id = page_likes.page_id 
 WHERE page_likes.liked_date IS NULL
 ORDER BY 1
+
+________________________________________________________________
+MID_TERM
+ 
+--baitap1
+SELECT DISTINCT film_id, 
+SUM (replacement_cost) AS total_amount
+FROM film
+GROUP BY film_id
+ORDER BY SUM (replacement_cost)
+
+--baitap2
+SELECT 
+SUM(CASE
+WHEN replacement_cost BETWEEN 9.99 AND 19.99 THEN 1 ELSE 0
+END) AS low,
+SUM(CASE
+	WHEN replacement_cost BETWEEN 20.00 AND 24.99 THEN 1 ELSE 0 
+END) AS medium,
+SUM(CASE
+	WHEN replacement_cost BETWEEN 25.00 AND 249.99 THEN 1 ELSE 0
+END) AS high
+FROM film
+
+--baitap3
+SELECT a.title, a.length, c.name FROM film AS a
+INNER JOIN film_category AS b
+ON a.film_id = b.film_id
+INNER JOIN category AS c
+ON b.category_id = c.category_id
+WHERE c.name IN ('Drama', 'Sports')
+ORDER BY a.length DESC
+
+--baitap4
+SELECT c.name, 
+COUNT (*) AS number_titles
+FROM film AS a
+INNER JOIN film_category AS b
+ON a.film_id = b.film_id
+INNER JOIN category AS c
+ON b.category_id = c.category_id
+GROUP BY  c.name
+ORDER BY number_titles DESC
+
+--baitap5
+SELECT a.first_name, a.last_name,
+COUNT(c.film_id) AS number_films
+FROM actor AS a
+INNER JOIN film_actor AS b
+ON a.actor_id= b.actor_id
+INNER JOIN film AS c
+ON b.film_id = c.film_id
+GROUP BY a.first_name, a.last_name
+ORDER BY number_films DESC
+
+
+--baitap6
+SELECT a.address
+FROM address AS a
+LEFT JOIN customer AS b
+ON a.address_id= b.address_id
+WHERE b.address_id IS NULL
+
+--baitap7
+SELECT a.city, 
+SUM (d.amount) AS total_city
+FROM city AS a
+JOIN address AS b 
+ON a.city_id = b.city_id
+JOIN customer AS c
+ON b.address_id = c.address_id
+JOIN payment AS d
+ON c.customer_id = d.customer_id
+GROUP BY a.city
+ORDER BY total_city DESC
+
+--baitap8 (doanh thu thap nhat = 50.85)
+SELECT CONCAT(a.city,', ',e.country) AS city_country,
+SUM(d.amount) AS total_amount
+FROM city AS a
+JOIN country AS e
+ON e.country_id= a.country_id
+JOIN address AS b 
+ON a.city_id = b.city_id
+JOIN customer AS c
+ON b.address_id = c.address_id
+JOIN payment AS d
+ON c.customer_id = d.customer_id
+GROUP BY city_country
+ORDER BY total_amount
+
+
