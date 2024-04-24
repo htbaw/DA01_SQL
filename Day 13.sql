@@ -2,8 +2,7 @@
 WITH duplicate_jd AS(
 SELECT company_id, title, description, COUNT(job_id) AS count_duplicate
 FROM job_listings
-GROUP BY company_id, title, description
-)
+GROUP BY company_id, title, description)
 
 SELECT COUNT(DISTINCT company_id) AS duplicate_companies
 FROM duplicate_jd
@@ -35,7 +34,7 @@ FROM (SELECT policy_holder_id,
 COUNT(case_id) AS call_count
 FROM callers
 GROUP BY policy_holder_id
-HAVING COUNT(case_id) >= 3 )AS call_records
+HAVING COUNT(case_id) >= 3) AS call_records
   
 --baitap4
 
